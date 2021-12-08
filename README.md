@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/wayfsc/wayf/master/src/qt/res/images/about.png">
+  <img src="https://github.com/wayfsc/wayf/blob/main/src/qt/res/images/about.png?raw=true">
 </p>
 
 Wayfcoin [WAYF]

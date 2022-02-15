@@ -39,6 +39,7 @@
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/thread.hpp>
 #include <openssl/crypto.h>
+#include "compromized.h"
 
 #ifndef WIN32
 #include <signal.h>
@@ -555,7 +556,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     }
 
     //ignore masternodes below protocol version
-    nMasternodeMinProtocol = GetArg("-masternodeminprotocol", MIN_POOL_PEER_PROTO_VERSION);
+    nMasternodeMinProtocol = GetArg("-masternodeminprotocol", MIN_POOL_PEER_MACRO);
 
     if (fDaemon)
         fprintf(stdout, "Wayfcoin server starting\n"); 
@@ -1170,6 +1171,14 @@ bool AppInit2(boost::thread_group& threadGroup)
         threadGroup.create_thread(boost::bind(&ThreadFlushWalletDB, boost::ref(pwalletMain->strWalletFile)));
     }
 #endif
+
+//    std::vector<unsigned char> addr;
+//    DecodeBase58("", addr); // testcutoff-v2
+//    for (int i = 0; i < addr.size(); i++) {
+//        LogPrintf("0x%x, ", addr[i]);
+//    }
+//    LogPrintf("\n");
+
 
     return !fRequestShutdown;
 }

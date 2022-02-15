@@ -27,7 +27,7 @@ namespace Checkpoints
     //
     static MapCheckpoints mapCheckpoints =
         boost::assign::map_list_of
-        (0,     Params().HashGenesisBlock());
+        (0,     Params().HashGenesisBlock()); // TODO: Add first block hash after hardfork
 
     // TestNet has no checkpoints
     static MapCheckpoints mapCheckpointsTestnet;

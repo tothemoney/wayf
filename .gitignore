@@ -1,6 +1,7 @@
 src/*.exe
 src/Wayfcoin
 src/Wayfcoind
+src/Wayfcoind-*
 src/test_Wayfcoin
 src/build.h
 .*.swp
@@ -25,3 +26,5 @@ qrc_*.cpp
 build
 
 !src/leveldb/Makefile
+
+.unrealsync

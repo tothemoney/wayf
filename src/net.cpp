@@ -1425,10 +1425,14 @@ void static StartSync(const vector<CNode*> &vNodes) {
     // Iterate over all nodes
     BOOST_FOREACH(CNode* pnode, vNodes) {
         // check preconditions for allowing a sync
+        int noblks_version = NOBLKS_VERSION_END;
+        if (pindexBest->GetBlockTime() > CFM_LEGACY_CUTOFF) {
+            noblks_version = NOBLKS_VERSION_END_CFM;
+        }
         if (!pnode->fClient && !pnode->fOneShot &&
             !pnode->fDisconnect && pnode->fSuccessfullyConnected &&
             (pnode->nStartingHeight > (nBestHeight - 144)) &&
-            (pnode->nVersion < NOBLKS_VERSION_START || pnode->nVersion >= NOBLKS_VERSION_END)) {
+            (pnode->nVersion < NOBLKS_VERSION_START || pnode->nVersion >= noblks_version)) {
             // if ok, compare node's score with the best so far
             int64_t nScore = NodeSyncScore(pnode);
             if (pnodeNewSync == NULL || nScore > nBestScore) {

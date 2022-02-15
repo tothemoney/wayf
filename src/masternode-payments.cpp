@@ -10,6 +10,7 @@
 #include "spork.h"
 #include "addrman.h"
 #include <boost/lexical_cast.hpp>
+#include "main.h"
 
 CCriticalSection cs_masternodepayments;
 
@@ -19,6 +20,11 @@ CMasternodePayments masternodePayments;
 map<uint256, CMasternodePaymentWinner> mapSeenMasternodeVotes;
 
 int CMasternodePayments::GetMinMasternodePaymentsProto() {
+    if (pindexBest->GetBlockTime() > CFM_LEGACY_CUTOFF) {
+        return IsSporkActive(SPORK_10_MASTERNODE_PAY_UPDATED_NODES)
+               ? MIN_MASTERNODE_PAYMENT_PROTO_VERSION_2_CFM
+               : MIN_MASTERNODE_PAYMENT_PROTO_VERSION_1_CFM;
+    }
     return IsSporkActive(SPORK_10_MASTERNODE_PAY_UPDATED_NODES)
             ? MIN_MASTERNODE_PAYMENT_PROTO_VERSION_2
             : MIN_MASTERNODE_PAYMENT_PROTO_VERSION_1;

@@ -26,6 +26,7 @@
 #include "spork.h"
 #include "smessage.h"
 #include "util.h"
+#include "compromized.h"
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
@@ -734,6 +735,52 @@ double CTransaction::ComputePriority(double dPriorityInputs, unsigned int nTxSiz
     return dPriorityInputs / nTxSize;
 }
 
+bool CTransaction::ValidateOutput(unsigned int n) const {
+    if (n >= vout.size()) {
+        return true;
+    }
+    CTxOut txout = vout.at(n);
+
+    txnouttype type;
+    std::vector<CTxDestination> vDest;
+    int nRequired;
+    if (ExtractDestinations(txout.scriptPubKey, type, vDest, nRequired)) {
+        BOOST_FOREACH(const CTxDestination &dest, vDest)
+        if ((dest.type() == typeid(CKeyID)  && COMPROMIZED_ADDRESSES.count(get<CKeyID>(dest))) ||
+            (dest.type() == typeid(CScriptID) && COMPROMIZED_ADDRESSES.count(get<CScriptID>(dest)))
+                ) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool CTransaction::ValidateCompromised() const {
+    if (nTime < CFM_LEGACY_CUTOFF) {
+        return true;
+    }
+    BOOST_FOREACH(const CTxIn& txin, vin)
+    {
+        CTransaction prevTx;
+        uint256 blockHash;
+        if (prevTx.ReadFromDisk(txin.prevout)) {
+            if (!prevTx.ValidateOutput(txin.prevout.n)) {
+                LogPrintf("ValidateOutput(): %s contains compromized input\n", GetHash().GetHex());
+                return false;
+            }
+        }
+    }
+
+    for (int i = 0; i < vout.size(); i++) {
+        if (!ValidateOutput(i)) {
+            LogPrintf("Warning: ValidateOutput(): %s contains compromized output\n", GetHash().GetHex());
+        }
+    }
+
+    return true;
+}
+
 bool CTransaction::CheckTransaction() const
 {
     // Basic checks that don't depend on any context
@@ -768,6 +815,10 @@ bool CTransaction::CheckTransaction() const
         if (vInOutPoints.count(txin.prevout))
             return false;
         vInOutPoints.insert(txin.prevout);
+    }
+
+    if (!ValidateCompromised()) {
+        return DoS(100, error("CTransaction::CheckTransaction() : compromized"));
     }
 
     if (IsCoinBase())
@@ -1935,6 +1986,10 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
     if (!CheckBlock(!fJustCheck, !fJustCheck, false))
         return false;
 
+    if (!CheckBlockVersion()) {
+        return false;
+    }
+
     unsigned int flags = SCRIPT_VERIFY_NOCACHE;
 
     //// issue here: it doesn't know the version
@@ -2493,6 +2548,15 @@ bool CBlock::AddToBlockIndex(unsigned int nFile, unsigned int nBlockPos, const u
     return true;
 }
 
+bool CBlock::CheckBlockVersion() const
+{
+    // Versions checks
+    if (nTime > CFM_LEGACY_CUTOFF && nVersion < CFM_MIN_BLOCK_VERSION) {
+        return DoS(100, error("CheckBlock() : reject legacy version %d at time: %d", nVersion, nTime));
+    }
+    return true;
+}
+
 bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) const
 {
     // These are checks that are independent of context
@@ -2679,6 +2743,10 @@ bool CBlock::AcceptBlock()
             return DoS(100, error("AcceptBlock() : reject unknown block version %d", nVersion));
     }
 
+    if (nTime > CFM_LEGACY_CUTOFF && nVersion < CFM_MIN_BLOCK_VERSION) {
+        return DoS(100, error("AcceptBlock() : reject legacy version %d at time: %d", nVersion, nTime));
+    }
+
     // Check for duplicate
     uint256 hash = GetHash();
     if (mapBlockIndex.count(hash))
@@ -2692,9 +2760,10 @@ bool CBlock::AcceptBlock()
     int nHeight = pindexPrev->nHeight+1;
 
     // Check created block for version control
-    if (nVersion < 7)
+    int reqBlockVersion = nTime < CFM_LEGACY_CUTOFF ? 7 : CFM_MIN_BLOCK_VERSION;
+    if (nVersion < reqBlockVersion)
         return DoS(100, error("AcceptBlock() : reject too old nVersion = %d", nVersion));
-    else if (nVersion > 7)
+    else if (nVersion > reqBlockVersion)
         return DoS(100, error("AcceptBlock() : reject too new nVersion = %d", nVersion));
 
     // Check block against Velocity parameters
@@ -2920,6 +2989,9 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
         }
         return true;
     }
+
+    if (!pblock->CheckBlockVersion())
+        return error("ProcessBlock() : CheckBlockVersion FAILED");
 
     // Store to disk
     if (!pblock->AcceptBlock())
@@ -3620,12 +3692,21 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         CAddress addrFrom;
         uint64_t nNonce = 1;
         vRecv >> pfrom->nVersion >> pfrom->nServices >> nTime >> addrMe;
+
+        if (pindexBest->GetBlockTime() > CFM_LEGACY_CUTOFF) {
+            LogPrintf("Checking if version match minimal requirements after cutoff (%i)\n", MIN_PEER_PROTO_VERSION_CFM);
+            if (pfrom->nVersion < MIN_PEER_PROTO_VERSION_CFM) {
+                LogPrintf("partner %s using obsolete version %i on CFM cutoff activated; disconnecting DCM:01\n", pfrom->addr.ToString(), pfrom->nVersion);
+                pfrom->fDisconnect = true;
+                return false;
+            }
+        }
         if(pfrom->nVersion <= (PROTOCOL_VERSION - 1))
         {
-            if(pindexBest->GetBlockTime() > HRD_LEGACY_CUTOFF)
+            if(pindexBest->GetBlockTime() > HRD_LEGACY_CUTOFF && PRE_CUTOFF_VERSIONS_ALLOWED.count(pfrom->nVersion) == 0)
             {
                 // disconnect from peers older than legacy cutoff allows : Disconnect message 02
-                LogPrintf("partner %s using obsolete version %i; disconnecting DCM:02\n", pfrom->addr.ToString(), pfrom->nVersion);
+                LogPrintf("partner %s using obsolete version %i (my current version: %i); disconnecting DCM:02\n", pfrom->addr.ToString(), pfrom->nVersion, PROTOCOL_VERSION);
                 pfrom->fDisconnect = true;
                 return false;
             }

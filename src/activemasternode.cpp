@@ -79,6 +79,24 @@ void CActiveMasternode::ManageStatus()
                 return;
             }
 
+            const uint256& prevHash = vin.prevout.hash;
+            CTransaction tx;
+            uint256 hashBlock;
+            bool fFound = GetTransaction(prevHash, tx, hashBlock);
+            if (fFound) {
+                LogPrintf("Checking masternode input\n");
+                if (!tx.ValidateOutput(vin.prevout.n)) {
+                    LogPrintf("CActiveMasternode::Register() - compromized key\n");
+                    return;
+                }
+                LogPrintf("Prev Masternode tx: %d\n", tx.GetHash().GetHex());
+                LogPrintf("Prev Masternode tx: %d\n", vin.prevout.n);
+                CTxOut txout = tx.vout.at(vin.prevout.n);
+                LogPrintf("\tOut: %s, %s\n", txout.ToString(), txout.GetHash().GetHex());
+            } else {
+                LogPrintf("Not found\n");
+            }
+
             LogPrintf("CActiveMasternode::ManageStatus() - Is capable master node!\n");
 
             status = MASTERNODE_IS_CAPABLE;

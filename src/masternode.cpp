@@ -79,7 +79,7 @@ CMasternode::CMasternode()
     cacheInputAgeBlock = 0;
     unitTest = false;
     allowFreeTx = true;
-    protocolVersion = (pindexBest->GetBlockTime() > CFM_LEGACY_CUTOFF ? MIN_PEER_PROTO_VERSION : MIN_PEER_PROTO_VERSION_CFM);
+    protocolVersion = (pindexBest->GetBlockTime() < CFM_LEGACY_CUTOFF ? MIN_PEER_PROTO_VERSION : MIN_PEER_PROTO_VERSION_CFM);
     nLastDsq = 0;
     donationAddress = CScript();
     donationPercentage = 0;

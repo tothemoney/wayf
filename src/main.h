@@ -703,7 +703,7 @@ public:
 
     void SetNull()
     {
-        nVersion = CBlock::CURRENT_VERSION;
+        nVersion = (GetTime() > CFM_LEGACY_CUTOFF - 3600) ? CBlock::CURRENT_VERSION : 7; // Start firing new version of blocks 1 hour before cutoff
         hashPrevBlock = 0;
         hashMerkleRoot = 0;
         nTime = 0;

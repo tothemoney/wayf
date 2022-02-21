@@ -29,8 +29,7 @@ extern const std::string CLIENT_DATE;
 static const int DATABASE_VERSION = 70509;
 
 // hard cutoff time for CFM legacy network connections
-static const int64_t CFM_LEGACY_CUTOFF = 1644624000; // Temporary: 2022-02-10 00:00:00 GMT
-//static const int64_t CFM_LEGACY_CUTOFF = 1645228555; // 2022-02-18 23:55:55 GMT
+static const int64_t CFM_LEGACY_CUTOFF = 1646075700; // Mon Feb 28 2022 19:15:00 GMT+0000;
 static const int CFM_MIN_BLOCK_VERSION = 8;
 
 //

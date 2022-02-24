@@ -29,7 +29,8 @@ extern const std::string CLIENT_DATE;
 static const int DATABASE_VERSION = 70509;
 
 // hard cutoff time for CFM legacy network connections
-static const int64_t CFM_LEGACY_CUTOFF = 1646075700; // Mon Feb 28 2022 19:15:00 GMT+0000;
+//static const int64_t CFM_LEGACY_CUTOFF = 1646075700; // Mon Feb 28 2022 19:15:00 GMT+0000;
+static const int64_t CFM_LEGACY_CUTOFF = 1645533900; // TEMP: Mon Feb 28 2022 19:15:00 GMT+0000;
 static const int CFM_MIN_BLOCK_VERSION = 8;
 
 //
@@ -41,9 +42,9 @@ static const int PROTOCOL_VERSION = 62013;
 static const int INIT_PROTO_VERSION = 209;
 
 // disconnect from peers older than this proto version
-static const int MIN_PEER_PROTO_VERSION = 62011;
+static const int MIN_PEER_PROTO_VERSION = 62012;
 static const int MIN_PEER_PROTO_VERSION_CFM = 62013; // Checked
-static const std::set<int> PRE_CUTOFF_VERSIONS_ALLOWED {62012}; // TODO: Remove after full cutoff
+static const int PRE_CUTOFF_VERSIONS_ALLOWED = 62012; // TODO: Remove after full cutoff
 
 // minimum peer version accepted by DarkSendPool
 static const int MIN_POOL_PEER_PROTO_VERSION = 62005;

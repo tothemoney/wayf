@@ -3701,9 +3701,9 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
                 return false;
             }
         }
-        if(pfrom->nVersion <= (PROTOCOL_VERSION - 1))
+        else if(pfrom->nVersion <= (PROTOCOL_VERSION - 1))
         {
-            if(pindexBest->GetBlockTime() > HRD_LEGACY_CUTOFF && PRE_CUTOFF_VERSIONS_ALLOWED.count(pfrom->nVersion) == 0)
+            if(pindexBest->GetBlockTime() > HRD_LEGACY_CUTOFF && pfrom->nVersion != PRE_CUTOFF_VERSIONS_ALLOWED)
             {
                 // disconnect from peers older than legacy cutoff allows : Disconnect message 02
                 LogPrintf("partner %s using obsolete version %i (my current version: %i); disconnecting DCM:02\n", pfrom->addr.ToString(), pfrom->nVersion, PROTOCOL_VERSION);

@@ -50,8 +50,6 @@ static const int PRE_CUTOFF_VERSIONS_ALLOWED = 62012; // TODO: Remove after full
 static const int MIN_POOL_PEER_PROTO_VERSION = 62005;
 static const int MIN_INSTANTX_PROTO_VERSION = 62005;
 static const int MIN_POOL_PEER_PROTO_VERSION_CFM = 62013;
-//#define MIN_POOL_PEER_MACRO pindexBest->GetBlockTime() > CFM_LEGACY_CUTOFF ? MIN_POOL_PEER_PROTO_VERSION_CFM : MIN_POOL_PEER_PROTO_VERSION
-#define MIN_POOL_PEER_MACRO MIN_POOL_PEER_PROTO_VERSION
 static const int MIN_INSTANTX_PROTO_VERSION_CFM = 62013;
 
 // minimum peer version that can receive masternode payments

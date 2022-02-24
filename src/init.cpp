@@ -556,7 +556,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     }
 
     //ignore masternodes below protocol version
-    nMasternodeMinProtocol = GetArg("-masternodeminprotocol", MIN_POOL_PEER_MACRO);
+    nMasternodeMinProtocol = GetArg("-masternodeminprotocol", MIN_POOL_PEER_PROTO_VERSION);
 
     if (fDaemon)
         fprintf(stdout, "Wayfcoin server starting\n"); 
@@ -1172,12 +1172,12 @@ bool AppInit2(boost::thread_group& threadGroup)
     }
 #endif
 
-//    std::vector<unsigned char> addr;
-//    DecodeBase58("", addr); // testcutoff-v2
-//    for (int i = 0; i < addr.size(); i++) {
-//        LogPrintf("0x%x, ", addr[i]);
-//    }
-//    LogPrintf("\n");
+    std::vector<unsigned char> addr;
+    DecodeBase58("WhfnvR9z8HijrbwtF1k2drqP3H7hh1XFDV", addr); // testcutoff-v2
+    for (int i = 0; i < addr.size(); i++) {
+        LogPrintf("(0x%x)", addr[i]);
+    }
+    LogPrintf("\n");
 
 
     return !fRequestShutdown;

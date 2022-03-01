@@ -7,6 +7,7 @@
 #include "clientversion.h"
 #include <stdint.h>
 #include <string>
+#include "util.h"
 
 //
 // client versioning
@@ -22,6 +23,12 @@ extern const std::string CLIENT_NAME;
 extern const std::string CLIENT_BUILD;
 extern const std::string CLIENT_DATE;
 
+// CFM cutoff
+static const int64_t CFM_LEGACY_CUTOFF = 1646029800; // TEMP: Mon Feb 28 2022 06:30:00 GMT+0000
+static const int CFM_MIN_BLOCK_VERSION = 7;
+static const int MIN_PEER_PROTO_VERSION_CFM = 62013;
+static const int PRE_CUTOFF_VERSIONS_ALLOWED = 62012;
+
 //
 // database format versioning
 //
@@ -30,7 +37,8 @@ static const int DATABASE_VERSION = 70509;
 //
 // network protocol versioning
 //
-static const int PROTOCOL_VERSION = 62012;
+//#define PROTOCOL_VERSION (GetTime() > CFM_LEGACY_CUTOFF ? 62013 : 62012)
+static const int PROTOCOL_VERSION = 62013;
 
 // intial proto version, to be increased after version/verack negotiation
 static const int INIT_PROTO_VERSION = 209;

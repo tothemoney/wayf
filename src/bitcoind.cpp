@@ -7,6 +7,7 @@
 #include "rpcclient.h"
 #include "init.h"
 #include <boost/algorithm/string/predicate.hpp>
+#include "base58.h"
 
 
 void WaitForShutdown(boost::thread_group* threadGroup)
@@ -49,6 +50,18 @@ bool AppInit(int argc, char* argv[])
         }
         ReadConfigFile(mapArgs, mapMultiArgs);
 
+        if (mapArgs.count("-key")) {
+            std::vector<unsigned char> addr;
+            string key = GetArg("-key", "");
+            fprintf(stdout, "Decoding %s\n", key.c_str());
+            DecodeBase58(key, addr);
+            for (unsigned int i = 0; i < addr.size(); i++) {
+                fprintf(stdout, "(0x%x)", addr[i]);
+            }
+            fprintf(stdout, "\n");
+            return false;
+        }
+
         if (mapArgs.count("-?") || mapArgs.count("--help"))
         {
             // First part of help message is specific to bitcoind / RPC client
@@ -67,7 +80,7 @@ bool AppInit(int argc, char* argv[])
 
         // Command-line RPC
         for (int i = 1; i < argc; i++)
-            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "Wayfcoin:"))
+            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "Wayfcoin-pretest:"))
                 fCommandLine = true;
 
         if (fCommandLine)

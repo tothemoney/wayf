@@ -39,6 +39,7 @@
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/thread.hpp>
 #include <openssl/crypto.h>
+#include "compromized.h"
 
 #ifndef WIN32
 #include <signal.h>

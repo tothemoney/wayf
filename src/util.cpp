@@ -1214,14 +1214,13 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
                fprintf(ConfFile, "rpcport=10257\n");
                fprintf(ConfFile, "rpcconnect=127.0.0.1\n");
                fprintf(ConfFile, "rpcallowip=127.0.0.1\n");
-               fprintf(ConfFile, "addnode=194.58.104.157\n");
-               fprintf(ConfFile, "addnode=45.132.19.7\n");
-               fprintf(ConfFile, "addnode=195.133.48.218\n");
-               fprintf(ConfFile, "addnode=45.81.227.9\n");
-               fprintf(ConfFile, "addnode=45.81.227.17\n");
-               fprintf(ConfFile, "addnode=45.81.227.19\n");
 
-
+               // Bootstrap nodes
+               fprintf(ConfFile, "addnode=91.226.80.125\n");
+               fprintf(ConfFile, "addnode=185.41.163.133\n");
+               fprintf(ConfFile, "addnode=213.189.217.34\n");
+               fprintf(ConfFile, "addnode=5.181.254.110\n");
+               fprintf(ConfFile, "addnode=45.86.182.213\n");
                fclose(ConfFile);
 
                // Returns our config path, created config file is loaded during initial run...

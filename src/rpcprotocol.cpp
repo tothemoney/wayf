@@ -189,6 +189,17 @@ int ReadHTTPMessage(std::basic_istream<char>& stream, map<string,
     int nLen = ReadHTTPHeaders(stream, mapHeadersRet);
     if (nLen < 0 || (size_t)nLen > max_size)
         return HTTP_INTERNAL_SERVER_ERROR;
+#ifdef ENABLE_MINING_WORKAROUND
+    if (fEnableMiningWorkaround) {
+        string str;
+        getline(stream, str);
+        LogPrintf("Dummy line: %s\n", str);
+        if (str.length() > 5) {
+            strMessageRet = str;
+            nLen = 0;
+        }
+    }
+#endif
 
     // Read message
     if (nLen > 0)

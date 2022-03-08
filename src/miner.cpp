@@ -533,7 +533,7 @@ void ThreadStakeMiner(CWallet *pwallet)
 
     CReserveKey reservekey(pwallet);
 
-    LogPrintf("stakedebug", "Staking thread\n");
+    LogPrint("stakedebug", "Staking thread\n");
 
     bool fTryToSync = true;
 
@@ -541,14 +541,14 @@ void ThreadStakeMiner(CWallet *pwallet)
     {
         while (pwallet->IsLocked())
         {
-            LogPrintf("stakedebug", "Staking thread: wallet locked\n");
+            LogPrint("stakedebug", "Staking thread: wallet locked\n");
             nLastCoinStakeSearchInterval = 0;
             MilliSleep(1000);
         }
 
         while (vNodes.empty() || IsInitialBlockDownload())
         {
-            LogPrintf("stakedebug", "Staking thread: Empty nodes (%s), or initial download (%s)\n", vNodes.empty() ? "t" : "f", IsInitialBlockDownload() ? "t" : "f");
+            LogPrint("stakedebug", "Staking thread: Empty nodes (%s), or initial download (%s)\n", vNodes.empty() ? "t" : "f", IsInitialBlockDownload() ? "t" : "f");
             nLastCoinStakeSearchInterval = 0;
             fTryToSync = true;
             MilliSleep(1000);
@@ -559,7 +559,7 @@ void ThreadStakeMiner(CWallet *pwallet)
             fTryToSync = false;
             if (vNodes.size() < 3 || pindexBest->GetBlockTime() < GetTime() - 10 * 60)
             {
-                LogPrintf("stakedebug", "Staking thread: nodes < 3 (%d) || time more 1 hr ago\n", vNodes.size());
+                LogPrint("stakedebug", "Staking thread: nodes < 3 (%d) || time more 1 hr ago\n", vNodes.size());
                 MilliSleep(10000);
                 continue;
             }
@@ -568,24 +568,24 @@ void ThreadStakeMiner(CWallet *pwallet)
         //
         // Create new block
         //
-        LogPrintf("stakedebug", "Staking thread: creating block\n");
+        LogPrint("stakedebug", "Staking thread: creating block\n");
         int64_t nFees;
         auto_ptr<CBlock> pblock(CreateNewBlock(reservekey, true, &nFees));
         if (!pblock.get())
             return;
 
-        LogPrintf("stakedebug", "Staking thread: signing block\n");
+        LogPrint("stakedebug", "Staking thread: signing block\n");
         // Trying to sign a block
         if (pblock->SignBlock(*pwallet, nFees))
         {
-            LogPrintf("stakedebug", "Staking thread: checking signed block\n");
+            LogPrint("stakedebug", "Staking thread: checking signed block\n");
             SetThreadPriority(THREAD_PRIORITY_NORMAL);
             CheckStake(pblock.get(), *pwallet);
             SetThreadPriority(THREAD_PRIORITY_LOWEST);
             MilliSleep(500);
         }
         else {
-            LogPrintf("stakedebug", "Staking thread: block sign failed\n");
+            LogPrint("stakedebug", "Staking thread: block sign failed\n");
             MilliSleep(nMinerSleep);
         }
     }

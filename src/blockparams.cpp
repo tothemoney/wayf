@@ -82,47 +82,47 @@ uint64_t difTimePoW = 0;
 void VRXswngPoSdebug()
 {
     // Print for debugging
-    LogPrintf("vrx", "Previously discovered PoS block: %u: \n",prvTime);
-    LogPrintf("vrx", "Current block-time: %u: \n",cntTime);
-    LogPrintf("vrx", "Time since last PoS block: %u: \n",difTimePoS);
-    if(difTimePoS > 1 * 60 * 60) { TerminalAverage /= 2; LogPrintf("vrx", "diffTimePoS is greater than 1 Hours: %u \n",cntTime);}
-    if(difTimePoS > 2 * 60 * 60) { TerminalAverage /= 2; LogPrintf("vrx", "diffTimePoS is greater than 2 Hours: %u \n",cntTime);}
-    if(difTimePoS > 3 * 60 * 60) { TerminalAverage /= 2; LogPrintf("vrx", "diffTimePoS is greater than 3 Hours: %u \n",cntTime);}
-    if(difTimePoS > 4 * 60 * 60) { TerminalAverage /= 2; LogPrintf("vrx", "diffTimePoS is greater than 4 Hours: %u \n",cntTime);}
+    LogPrint("vrx", "Previously discovered PoS block: %u: \n",prvTime);
+    LogPrint("vrx", "Current block-time: %u: \n",cntTime);
+    LogPrint("vrx", "Time since last PoS block: %u: \n",difTimePoS);
+    if(difTimePoS > 1 * 60 * 60) { TerminalAverage /= 2; LogPrint("vrx", "diffTimePoS is greater than 1 Hours: %u \n",cntTime);}
+    if(difTimePoS > 2 * 60 * 60) { TerminalAverage /= 2; LogPrint("vrx", "diffTimePoS is greater than 2 Hours: %u \n",cntTime);}
+    if(difTimePoS > 3 * 60 * 60) { TerminalAverage /= 2; LogPrint("vrx", "diffTimePoS is greater than 3 Hours: %u \n",cntTime);}
+    if(difTimePoS > 4 * 60 * 60) { TerminalAverage /= 2; LogPrint("vrx", "diffTimePoS is greater than 4 Hours: %u \n",cntTime);}
     return;
 }
 
 void VRXswngPoWdebug()
 {
     // Print for debugging
-    LogPrintf("vrx", "Previously discovered PoW block: %u: \n",prvTime);
-    LogPrintf("vrx", "Current block-time: %u: \n",cntTime);
-    LogPrintf("vrx", "Time since last PoW block: %u: \n",difTimePoW);
-    if(difTimePoW > 1 * 60 * 60) { TerminalAverage /= 2; LogPrintf("vrx", "diffTimePoW is greater than 1 Hours: %u \n",cntTime);}
-    if(difTimePoW > 2 * 60 * 60) { TerminalAverage /= 2; LogPrintf("vrx", "diffTimePoW is greater than 2 Hours: %u \n",cntTime);}
-    if(difTimePoW > 3 * 60 * 60) { TerminalAverage /= 2; LogPrintf("vrx", "diffTimePoW is greater than 3 Hours: %u \n",cntTime);}
-    if(difTimePoW > 4 * 60 * 60) { TerminalAverage /= 2; LogPrintf("vrx", "diffTimePoW is greater than 4 Hours: %u \n",cntTime);}
+    LogPrint("vrx", "Previously discovered PoW block: %u: \n",prvTime);
+    LogPrint("vrx", "Current block-time: %u: \n",cntTime);
+    LogPrint("vrx", "Time since last PoW block: %u: \n",difTimePoW);
+    if(difTimePoW > 1 * 60 * 60) { TerminalAverage /= 2; LogPrint("vrx", "diffTimePoW is greater than 1 Hours: %u \n",cntTime);}
+    if(difTimePoW > 2 * 60 * 60) { TerminalAverage /= 2; LogPrint("vrx", "diffTimePoW is greater than 2 Hours: %u \n",cntTime);}
+    if(difTimePoW > 3 * 60 * 60) { TerminalAverage /= 2; LogPrint("vrx", "diffTimePoW is greater than 3 Hours: %u \n",cntTime);}
+    if(difTimePoW > 4 * 60 * 60) { TerminalAverage /= 2; LogPrint("vrx", "diffTimePoW is greater than 4 Hours: %u \n",cntTime);}
     return;
 }
 
 void VRXdebug()
 {
     // Print for debugging
-    LogPrintf("vrx", "Terminal-Velocity 1st spacing: %u: \n",VLrate1);
-    LogPrintf("vrx", "Terminal-Velocity 2nd spacing: %u: \n",VLrate2);
-    LogPrintf("vrx", "Terminal-Velocity 3rd spacing: %u: \n",VLrate3);
-    LogPrintf("vrx", "Terminal-Velocity 4th spacing: %u: \n",VLrate4);
-    LogPrintf("vrx", "Terminal-Velocity 5th spacing: %u: \n",VLrate5);
-    LogPrintf("vrx", "Desired normal spacing: %u: \n",DSrateNRM);
-    LogPrintf("vrx", "Desired maximum spacing: %u: \n",DSrateMAX);
-    LogPrintf("vrx", "Terminal-Velocity 1st multiplier set to: %f: \n",VLF1);
-    LogPrintf("vrx", "Terminal-Velocity 2nd multiplier set to: %f: \n",VLF2);
-    LogPrintf("vrx", "Terminal-Velocity 3rd multiplier set to: %f: \n",VLF3);
-    LogPrintf("vrx", "Terminal-Velocity 4th multiplier set to: %f: \n",VLF4);
-    LogPrintf("vrx", "Terminal-Velocity 5th multiplier set to: %f: \n",VLF5);
-    LogPrintf("vrx", "Terminal-Velocity averaged a final multiplier of: %f: \n",TerminalAverage);
-    LogPrintf("vrx", "Prior Terminal-Velocity: %u\n", oldBN);
-    LogPrintf("vrx", "New Terminal-Velocity:  %u\n", newBN);
+    LogPrint("vrx", "Terminal-Velocity 1st spacing: %u: \n",VLrate1);
+    LogPrint("vrx", "Terminal-Velocity 2nd spacing: %u: \n",VLrate2);
+    LogPrint("vrx", "Terminal-Velocity 3rd spacing: %u: \n",VLrate3);
+    LogPrint("vrx", "Terminal-Velocity 4th spacing: %u: \n",VLrate4);
+    LogPrint("vrx", "Terminal-Velocity 5th spacing: %u: \n",VLrate5);
+    LogPrint("vrx", "Desired normal spacing: %u: \n",DSrateNRM);
+    LogPrint("vrx", "Desired maximum spacing: %u: \n",DSrateMAX);
+    LogPrint("vrx", "Terminal-Velocity 1st multiplier set to: %f: \n",VLF1);
+    LogPrint("vrx", "Terminal-Velocity 2nd multiplier set to: %f: \n",VLF2);
+    LogPrint("vrx", "Terminal-Velocity 3rd multiplier set to: %f: \n",VLF3);
+    LogPrint("vrx", "Terminal-Velocity 4th multiplier set to: %f: \n",VLF4);
+    LogPrint("vrx", "Terminal-Velocity 5th multiplier set to: %f: \n",VLF5);
+    LogPrint("vrx", "Terminal-Velocity averaged a final multiplier of: %f: \n",TerminalAverage);
+    LogPrint("vrx", "Prior Terminal-Velocity: %u\n", oldBN);
+    LogPrint("vrx", "New Terminal-Velocity:  %u\n", newBN);
     return;
 }
 
@@ -133,14 +133,14 @@ void GNTdebug()
     if (retarget != DIFF_VRX)
     {
         // debug info for testing
-        LogPrintf("vrx", "GetNextTargetRequired() : Invalid retarget selection, using default \n");
+        LogPrint("vrx", "GetNextTargetRequired() : Invalid retarget selection, using default \n");
         return;
     }
 
     // Retarget using Terminal-Velocity
     // debug info for testing
-    LogPrintf("vrx", "Terminal-Velocity retarget selected \n");
-    LogPrintf("vrx", "Espers retargetted using: Terminal-Velocity difficulty curve \n");
+    LogPrint("vrx", "Terminal-Velocity retarget selected \n");
+    LogPrint("vrx", "Espers retargetted using: Terminal-Velocity difficulty curve \n");
     return;
 }
 

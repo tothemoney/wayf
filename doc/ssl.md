@@ -1,6 +1,6 @@
 Enabling SSL on original client daemon
 ======================================
-By default, Wayfcoin allows JSON-RPC commands to be sent to http://localhost:10257
+By default, Wayfcoin allows JSON-RPC commands to be sent to http://localhost:10258
 and accepts connections only from the localhost.
 
 JSON-RPC Over SSL Setup

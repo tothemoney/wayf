@@ -60,7 +60,7 @@ OR
 
 ### Run AppImage daemon
 ```
-wget -O - https://raw.githubusercontent.com/wayfsc/wayf/master/ubuntu_install.sh | bash
+wget -O - https://raw.githubusercontent.com/wayfsc/wayf/main/ubuntu_install.sh | bash
 ```
 
 License
